@@ -1,0 +1,118 @@
+程序 bin/etc/conf(cnf)/lib/sbin/include/man/log
+--------------------------------------------------------------------------------
+mysql：
+
+[root@localhost src]# /bin/cp support-files/my-default.cnf /etc/my.cnf
+[root@localhost src]# vim /etc/my.cnf
+在[mysqld]节点中添加：
+datadir = /data/mysql
+log-error = /data/mysql/error.log
+pid-file = /data/mysql/mysql.pid
+user = mysql
+tmpdir = /tmp
+
+
+启动 :service mysqld start
+另一种启动方式 /usr/local/mysql/bin/mysqld  start
+进入：/usr/local/mysql/bin/mysql -uroot -p123456
+
+-------------------------------------------------------------------------------
+httpd
+问题:sbin/httpd restart --> /usr/local/apache2/htdocs
+usr/local/apache/bin /apachectl  restart --> /var/www
+usr/local/apache/conf/httpd.conf   对应的是 sbin/httpd 而不是Apachctl
+
+
+启动: service httpd start
+另一种启动：/usr/local/apache/bin/apachectl start 
+--------------------------------------------------------------------------------
+PDO-mysql（mysql 与php结合）
+问题：安装在 /usr/local/php/etc/php.ini 更改extension dir          =/usr/local/php/lib/php/extensions/no-debug-zts-20121212/      extension=pdo_mysql.os
+其实对  etc/php.ini
+原因：cp /usr/local/src/php-5.6.13/php.ini-production /etc/php.ini
+
+解压进入文件夹
+# /usr/local/php/bin/phpize
+
+编译错误整理
+<mysql/mysql.h>
+安装mysql.devel
+<mysql/mysqld.error.h>
+
+ 
+--------------------------------------------------------------------------------
+php 
+ (AddType application/x-gzip .gz .tgz)
+apache 与php 整合：AddType application/x-httpd-php .php加入 httpd.conf
+--------------------------------------------------------------------------------
+phpmyadmin(Mysql图形化界面)
+LoadModule php5_module        modules/libphp5.so 加入httpd.conf 
+
+-----------------------------------------------------------------------------------
+网络
+ netstat -ntlp（查看端口）
+httpd.conf / Listen :80--->8080
+firewall-cmd --zone=public --add-port=8080/tcp --permanent
+80端口没有用
+
+问题：
+.NAT 方式
+主机相当于路由器：
+1 动态 ip  PPP连接       10.121.5.157 ：5901（255.255.255.255）
+2 子网ip  VMnet8       192.168.137.1:5901 -->192.168.137.25:8080
+5901 到底是谁的端口》》》》》》》》》》》》》》》》》》》》》》》》》》》》》？
+桥接方式
+主机静态IP     本地连接  169.254.172.182                169.254.172.18
+
+如何使外网访问？？？？？？？？？？？？？
+自己在window开个端口没用
+-----------------------------------------------------------------------------------
+telnet、xinted 
+chkconfig telnet on
+/bin/systemctl start vsftpd.service
+没用》》》》》》》》》》》》》》》》》》》》》》》》》》》》》》》》？
+用ssh 软件 putty
+
+-----------------------------------------------------------------------------------
+yum
+mount /dev/cdrom /media
+cd /etc/yum.repos.d (Centos.Media.repos)
+yum list
+yum install   name
+----------------------------------------------------------------------------
+22.35 jinanxi
+------------------------------------------------------------------------------
+git
+
+tortoise 中 remote URL中不能含有http://
+并不是而是 ssh 而且要在github \setting 填写key
+还有很多需要explore
+
+
+---------------------------------------------------------------------------
+MYSQL（windows）
+
+应该先启动mysql
+net start mysql
+mysql -uroot -p123456
+如果忘记密码
+mysqld --default-file="D:\mysql\mysql-5.6.24-win32\my-default.ini"（m-default.ini）--console -skip-grant-tables 
+创建另一个 窗口
+mysql -u root -p
+show databases
+update user set  password=PASSWORD( '123456') where USER='root'
+--------------------------------------------------------------------------
+
+数据
+数据结构
+page.wxml 页面  {view }                            （数据页面）
+page.wxss                                                 （框架修饰）
+page.js  javascript   {controler     model}  （数据操作）==  算法
+page.json
+
+app.js javascript
+app.json 全局配置文件
+app.wxss 全局样式文件
+
+
+
